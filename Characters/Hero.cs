@@ -1,22 +1,64 @@
 namespace Characters
 {
-    public class Hero : MonoBehaviour
+    public class Hero
     {
-        public int currentHealth;
+        public CharacterClassesEnum.Classes class;
+        public CharacterClassesEnum.Specialization specialization;
+
+        public int maxHealth;
+        public int health { get { return currentHealth; }}
+        int currentHealth;
+
+        public int maxMana;
+        public int mana { get { return currentMana; }}
+        int currentMana;
+        
+        public int defenseEquipment;
+        public int meleeProficiency;
+        public int distanceProficiency;
+        public int magicProficiency;
+        public int defenseProciency;
+        public WeaponProficiencyEnum equippedWeaponProficiency;
+
+        public int baseAttack;
         public int attack;
-        public int skill;
+        public int attackEquipment;
+
+        public int baseDefense;
         public int defense;
+        public int defenseEquipment;
 
-        public int calculateDamage() {
-            int damage;
+        public string status;
 
-            damage = (this.attack + this.skill) - this.defense;
-
-            return damage;
+        
+        void calculateHeroDefense(){
+            this.defense = this.defenseProciency + this.defenseEquipment + this.baseDefense;
         }
 
-        public void changeHealth(int damage) {
-            this.currentHealth = this.currentHealth - damage;
+        void calculateHeroAttack() {
+            int proficiency = getEquippedWeaponProficiency();
+
+            this.attack = this.proficiency + this.attackEquipment + this.baseAttack;
+        }
+
+        void changeHealth(int amount) {
+            this.currentHealth = Mathf.Clamp(this.currentHealth + amount, 0, this.maxHealth);
+        }
+
+        public int getEquippedWeaponProficiency() {
+            switch (this.equippedWeaponProficiency) {
+                case MELEE:
+                return meleeProficiency;
+                break;
+
+                case DISTANCE:
+                return distanceProficiency;
+                break;
+
+                case MAGIC:
+                return magicProficiency;
+                break;
+            }
         }
     }
 }
